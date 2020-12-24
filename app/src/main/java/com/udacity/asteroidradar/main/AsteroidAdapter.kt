@@ -8,38 +8,43 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
+import com.udacity.asteroidradar.databinding.SingleAsteroidBinding
 
 class AsteroidAdapter : RecyclerView.Adapter<AsteroidAdapter.ViewHolder>() {
     var data = listOf<Asteroid>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-
-        val view = layoutInflater.inflate(R.layout.single_asteroid,parent,false)
-
-        return ViewHolder(view)
+        return ViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentAsteroid = data[position]
-
-        holder.asteroidMainTitle.text = currentAsteroid.codename
-        holder.asteroidDate.text = currentAsteroid.closeApproachDate
-
-        if (currentAsteroid.isPotentiallyHazardous) {
-            holder.image.setImageResource(R.drawable.ic_status_potentially_hazardous)
-        } else {
-            holder.image.setImageResource(R.drawable.ic_status_normal)
-        }
+        holder.bind(currentAsteroid)
     }
 
     override fun getItemCount(): Int {
         return data.size
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val asteroidMainTitle : TextView = itemView.findViewById(R.id.tv_asteroid_main_text)
-        val asteroidDate : TextView = itemView.findViewById(R.id.tv_asteroid_date)
-        val image : ImageView = itemView.findViewById(R.id.iv_face)
+    class ViewHolder(private val binding: SingleAsteroidBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item : Asteroid){
+            binding.tvAsteroidMainText.text = item.codename
+            binding.tvAsteroidDate.text = item.closeApproachDate
+
+            if (item.isPotentiallyHazardous) {
+                binding.ivFace.setImageResource(R.drawable.ic_status_potentially_hazardous)
+            } else {
+                binding.ivFace.setImageResource(R.drawable.ic_status_normal)
+            }
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): ViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = SingleAsteroidBinding.inflate(layoutInflater, parent, false)
+                return ViewHolder(binding)
+            }
+        }
     }
 }
