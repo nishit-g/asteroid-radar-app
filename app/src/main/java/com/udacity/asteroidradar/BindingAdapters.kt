@@ -13,6 +13,31 @@ fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
     }
 }
 
+@BindingAdapter("statusIcon2")
+fun ImageView.setImageResource(item : Asteroid?) {
+    item?.let {
+        if (item.isPotentiallyHazardous) {
+            setImageResource(R.drawable.ic_status_potentially_hazardous)
+        } else {
+            setImageResource(R.drawable.ic_status_normal)
+        }
+    }
+}
+
+@BindingAdapter("codeNameText")
+fun TextView.setMainAsteroidText(item: Asteroid?) {
+    item?.let {
+        text = item.codename
+    }
+}
+
+@BindingAdapter("asteroidDateText")
+fun TextView.setAsteroidDate(item: Asteroid?) {
+    item?.let {
+        text = item.closeApproachDate
+    }
+}
+
 @BindingAdapter("asteroidStatusImage")
 fun bindDetailsStatusImage(imageView: ImageView, isHazardous: Boolean) {
     if (isHazardous) {
@@ -39,3 +64,4 @@ fun bindTextViewToDisplayVelocity(textView: TextView, number: Double) {
     val context = textView.context
     textView.text = String.format(context.getString(R.string.km_s_unit_format), number)
 }
+

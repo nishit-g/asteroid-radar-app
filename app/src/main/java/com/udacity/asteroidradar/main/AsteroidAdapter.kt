@@ -28,15 +28,20 @@ class AsteroidAdapter : RecyclerView.Adapter<AsteroidAdapter.ViewHolder>() {
 
     class ViewHolder(private val binding: SingleAsteroidBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item : Asteroid){
-            binding.tvAsteroidMainText.text = item.codename
-            binding.tvAsteroidDate.text = item.closeApproachDate
+//        fun bind(item : Asteroid){
+//            binding.tvAsteroidMainText.text = item.codename
+//            binding.tvAsteroidDate.text = item.closeApproachDate
+//
+//            if (item.isPotentiallyHazardous) {
+//                binding.ivFace.setImageResource(R.drawable.ic_status_potentially_hazardous)
+//            } else {
+//                binding.ivFace.setImageResource(R.drawable.ic_status_normal)
+//            }
+//        }
 
-            if (item.isPotentiallyHazardous) {
-                binding.ivFace.setImageResource(R.drawable.ic_status_potentially_hazardous)
-            } else {
-                binding.ivFace.setImageResource(R.drawable.ic_status_normal)
-            }
+        fun bind(item : Asteroid){
+            binding.asteroid = item
+            binding.executePendingBindings()
         }
 
         companion object {
