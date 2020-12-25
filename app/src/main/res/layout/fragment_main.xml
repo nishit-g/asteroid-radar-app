@@ -20,6 +20,7 @@
             android:layout_height="220dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/asteroid_recycler"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
