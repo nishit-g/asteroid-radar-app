@@ -1,6 +1,7 @@
 package com.udacity.asteroidradar.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PrivateConstants
@@ -9,6 +10,7 @@ import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.database.DatabaseAsteroid
 import com.udacity.asteroidradar.database.asDomainModel
+import com.udacity.asteroidradar.main.AsteroidApiStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -16,6 +18,9 @@ import org.json.JSONObject
 class AsteroidRepository(private val database : AsteroidDatabase) {
     // TODO : Add Your own API KEY HERE
     private val apiKey = PrivateConstants.API_KEY
+
+    val status = MutableLiveData<AsteroidApiStatus>()
+
     // UI's will observe this
     val asteroidsToShow: LiveData<List<Asteroid>> =
             Transformations.map(database.asteroidDatabaseDAO.getAll()) {
@@ -25,6 +30,7 @@ class AsteroidRepository(private val database : AsteroidDatabase) {
 
     // Function to retrieve and Store it in the database
     suspend fun refreshAsteroids(){
+        status.value = AsteroidApiStatus.LOADING
         withContext(Dispatchers.IO){
             // This will return json String
             val json = AsteroidApi.retrofitService.getAsteroid(apiKey)
@@ -56,5 +62,6 @@ class AsteroidRepository(private val database : AsteroidDatabase) {
             // Insert the transformed List to database
             database.asteroidDatabaseDAO.insertAll(transformedAsteroids.toList())
         }
+        status.value = AsteroidApiStatus.DONE
     }
 }

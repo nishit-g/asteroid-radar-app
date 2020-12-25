@@ -21,6 +21,8 @@ import org.json.JSONObject
 import retrofit2.*
 import java.lang.Exception
 
+enum class AsteroidApiStatus { LOADING, DONE }
+
 class MainViewModel(private val database: AsteroidDatabase, application: Application) : ViewModel() {
 
     // TODO : Add Your own API KEY HERE
@@ -29,7 +31,8 @@ class MainViewModel(private val database: AsteroidDatabase, application: Applica
     // Create an instance of repository
     private val repository = AsteroidRepository(database)
 
-
+    // Status for Progress Bar
+    val status = repository.status
 //    private var _asteroidList =  MutableLiveData<MutableList<Asteroid>>()
 //
 //    val asteroidList : LiveData<MutableList<Asteroid>>
@@ -57,6 +60,7 @@ class MainViewModel(private val database: AsteroidDatabase, application: Applica
             }
         }catch (e:Exception){
             Log.d(TAG, "${e.message}")
+            status.value = AsteroidApiStatus.DONE
         }
 
     }
