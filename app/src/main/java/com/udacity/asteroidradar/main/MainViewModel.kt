@@ -1,17 +1,19 @@
 package com.udacity.asteroidradar.main
 
+import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PrivateConstants
 import com.udacity.asteroidradar.api.AsteroidApi
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
+import kotlinx.coroutines.launch
 import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import retrofit2.*
+import java.lang.Exception
 
 class MainViewModel : ViewModel() {
 
@@ -35,18 +37,30 @@ class MainViewModel : ViewModel() {
     }
 
     private fun fetchAsteroidList() {
+        viewModelScope.launch {
+            try {
+                val json = AsteroidApi.retrofitService.getAsteroid(apiKey)
 
-        AsteroidApi.retrofitService.getAsteroid(apiKey).enqueue(object : Callback<String>{
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                    val json =JSONObject(response.body()!!)
-                    _asteroidList.value?.addAll(parseAsteroidsJsonResult(json))
-                    Log.d("Success", (_asteroidList.value as ArrayList<Asteroid>).size.toString())
-            }
+                val asteroids = parseAsteroidsJsonResult(JSONObject(json))
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                Log.d("FAILURE", t.message.toString())
+                _asteroidList.value = asteroids
+
+            }catch (e : Exception){
+                Log.d("Error", "fetchAsteroidList: ${e.message}")
             }
-        })
+        }
+
+//        AsteroidApi.retrofitService.getAsteroid(apiKey).enqueue(object : Callback<String>{
+//            override fun onResponse(call: Call<String>, response: Response<String>) {
+//                    val json =JSONObject(response.body()!!)
+//                    _asteroidList.value?.addAll(parseAsteroidsJsonResult(json))
+//            }
+//
+//            override fun onFailure(call: Call<String>, t: Throwable) {
+//                Log.d("FAILURE", t.message.toString())
+//            }
+//        })
+
     }
 
     // For Checking purposes fill the asteroid list
