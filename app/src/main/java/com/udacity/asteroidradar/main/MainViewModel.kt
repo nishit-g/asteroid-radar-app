@@ -1,5 +1,6 @@
 package com.udacity.asteroidradar.main
 
+import android.app.Application
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -10,21 +11,28 @@ import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PrivateConstants
 import com.udacity.asteroidradar.api.AsteroidApi
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
+import com.udacity.asteroidradar.database.AsteroidDatabase
+import com.udacity.asteroidradar.database.AsteroidDatabaseDAO
+import com.udacity.asteroidradar.repository.AsteroidRepository
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.*
 import java.lang.Exception
 
-class MainViewModel : ViewModel() {
+class MainViewModel(private val database: AsteroidDatabase, application: Application) : ViewModel() {
 
     // TODO : Add Your own API KEY HERE
     private val apiKey = PrivateConstants.API_KEY
 
-    private var _asteroidList =  MutableLiveData<MutableList<Asteroid>>()
+    // Create an instance of repository
+    private val repository = AsteroidRepository(database)
 
-    val asteroidList : LiveData<MutableList<Asteroid>>
-        get() = _asteroidList
 
+//    private var _asteroidList =  MutableLiveData<MutableList<Asteroid>>()
+//
+//    val asteroidList : LiveData<MutableList<Asteroid>>
+//        get() = _asteroidList
+//
 
     private val _navigateToAsteroidDetail = MutableLiveData<Asteroid>()
 
@@ -33,35 +41,41 @@ class MainViewModel : ViewModel() {
 
     init {
 //        _asteroidList.value = dummyAsteroids()
-        fetchAsteroidList()
-    }
+        // Since we are now using repository
+//        fetchAsteroidList()
 
-    private fun fetchAsteroidList() {
         viewModelScope.launch {
-            try {
-                val json = AsteroidApi.retrofitService.getAsteroid(apiKey)
-
-                val asteroids = parseAsteroidsJsonResult(JSONObject(json))
-
-                _asteroidList.value = asteroids
-
-            }catch (e : Exception){
-                Log.d("Error", "fetchAsteroidList: ${e.message}")
-            }
+            repository.refreshAsteroids()
         }
-
-//        AsteroidApi.retrofitService.getAsteroid(apiKey).enqueue(object : Callback<String>{
-//            override fun onResponse(call: Call<String>, response: Response<String>) {
-//                    val json =JSONObject(response.body()!!)
-//                    _asteroidList.value?.addAll(parseAsteroidsJsonResult(json))
-//            }
-//
-//            override fun onFailure(call: Call<String>, t: Throwable) {
-//                Log.d("FAILURE", t.message.toString())
-//            }
-//        })
-
     }
+
+
+    val asteroidList = repository.asteroidsToShow
+
+//    private fun fetchAsteroidList() {
+//        viewModelScope.launch {
+//            try {
+//                val json = AsteroidApi.retrofitService.getAsteroid(apiKey)
+//
+//                val asteroids = parseAsteroidsJsonResult(JSONObject(json))
+//
+//                _asteroidList.value = asteroids
+//            }catch (e : Exception){
+//                Log.d("Error", "fetchAsteroidList: ${e.message}")
+//            }
+//        }
+////        AsteroidApi.retrofitService.getAsteroid(apiKey).enqueue(object : Callback<String>{
+////            override fun onResponse(call: Call<String>, response: Response<String>) {
+////                    val json =JSONObject(response.body()!!)
+////                    _asteroidList.value?.addAll(parseAsteroidsJsonResult(json))
+////            }
+////
+////            override fun onFailure(call: Call<String>, t: Throwable) {
+////                Log.d("FAILURE", t.message.toString())
+////            }
+////        })
+//
+//    }
 
     // For Checking purposes fill the asteroid list
     private fun dummyAsteroids() : MutableList<Asteroid>? {
