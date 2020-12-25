@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.main
 import android.app.Application
 import android.content.ContentValues.TAG
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
@@ -53,7 +54,7 @@ class MainViewModel(private val database: AsteroidDatabase, application: Applica
         when(it!!){
             AsteroidApiFilter.LOAD_TODAY_ASTEROIDS -> repository.todayAsteroids
             AsteroidApiFilter.LOAD_WEEK_ASTEROIDS -> repository.weeklyAsteroids
-            AsteroidApiFilter.LOAD_SAVED_ASTEROIDS -> repository.savedAsteroids
+            AsteroidApiFilter.LOAD_SAVED_ASTEROIDS -> repository.asteroidsToShow
         }
     }
 

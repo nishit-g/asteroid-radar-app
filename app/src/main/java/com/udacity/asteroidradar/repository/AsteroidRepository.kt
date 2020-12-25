@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.PrivateConstants
 import com.udacity.asteroidradar.api.AsteroidApi
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
@@ -14,10 +15,24 @@ import com.udacity.asteroidradar.main.AsteroidApiStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AsteroidRepository(private val database : AsteroidDatabase) {
     // TODO : Add Your own API KEY HERE
     private val apiKey = PrivateConstants.API_KEY
+
+
+    private var today = ""
+    private var week = ""
+    init {
+        val dataFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
+        val calendar = Calendar.getInstance()
+        today = dataFormat.format(calendar.time)
+        calendar.add(Calendar.DAY_OF_YEAR, 7)
+        week = dataFormat.format(calendar.time)
+    }
+
 
     val status = MutableLiveData<AsteroidApiStatus>()
 
@@ -26,6 +41,14 @@ class AsteroidRepository(private val database : AsteroidDatabase) {
             Transformations.map(database.asteroidDatabaseDAO.getAll()) {
                 it.asDomainModel()
             }
+
+    val todayAsteroids: LiveData<List<Asteroid>> = Transformations.map(database.asteroidDatabaseDAO.getAsteroidsForDay(today)) {
+        it.asDomainModel()
+    }
+
+    val weeklyAsteroids: LiveData<List<Asteroid>> = Transformations.map(database.asteroidDatabaseDAO.getAsteroidsForWeek(today, week)) {
+        it.asDomainModel()
+    }
 
 
     // Function to retrieve and Store it in the database
