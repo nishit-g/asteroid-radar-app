@@ -10,7 +10,7 @@ import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.SingleAsteroidBinding
 
-class AsteroidAdapter : RecyclerView.Adapter<AsteroidAdapter.ViewHolder>() {
+class AsteroidAdapter(private val clickListener : AsteroidClickListener) : RecyclerView.Adapter<AsteroidAdapter.ViewHolder>() {
     var data = listOf<Asteroid>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -19,7 +19,7 @@ class AsteroidAdapter : RecyclerView.Adapter<AsteroidAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentAsteroid = data[position]
-        holder.bind(currentAsteroid)
+        holder.bind(clickListener, currentAsteroid)
     }
 
     override fun getItemCount(): Int {
@@ -39,8 +39,9 @@ class AsteroidAdapter : RecyclerView.Adapter<AsteroidAdapter.ViewHolder>() {
 //            }
 //        }
 
-        fun bind(item : Asteroid){
+        fun bind(clickListener: AsteroidClickListener, item : Asteroid){
             binding.asteroid = item
+            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
 
@@ -51,5 +52,10 @@ class AsteroidAdapter : RecyclerView.Adapter<AsteroidAdapter.ViewHolder>() {
                 return ViewHolder(binding)
             }
         }
+    }
+
+    // Click Listener
+    class AsteroidClickListener(val clickListener: (asteroidId: Long) -> Unit){
+        fun onClick(asteroid: Asteroid) = clickListener(asteroid.id)
     }
 }
