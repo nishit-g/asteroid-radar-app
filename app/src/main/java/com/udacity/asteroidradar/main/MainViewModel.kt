@@ -1,11 +1,22 @@
 package com.udacity.asteroidradar.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.PrivateConstants
+import com.udacity.asteroidradar.api.AsteroidApi
+import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainViewModel : ViewModel() {
+
+    // TODO : Add Your own API KEY HERE
+    private val apiKey = PrivateConstants.API_KEY
 
     private var _asteroidList =  MutableLiveData<MutableList<Asteroid>>()
 
@@ -20,6 +31,22 @@ class MainViewModel : ViewModel() {
 
     init {
         _asteroidList.value = dummyAsteroids()
+        fetchAsteroidList()
+    }
+
+    private fun fetchAsteroidList() {
+
+        AsteroidApi.retrofitService.getAsteroid(apiKey).enqueue(object : Callback<String>{
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                    val json =JSONObject(response.body()!!)
+                    _asteroidList.value?.addAll(parseAsteroidsJsonResult(json))
+                    Log.d("Success", (_asteroidList.value as ArrayList<Asteroid>).size.toString())
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.d("FAILURE", t.message.toString())
+            }
+        })
     }
 
     // For Checking purposes fill the asteroid list
@@ -38,4 +65,7 @@ class MainViewModel : ViewModel() {
     fun doneNavigatingToAsteroidDetail(){
         _navigateToAsteroidDetail.value = null
     }
+
+
+
 }

@@ -33,13 +33,14 @@ class MainFragment : Fragment() {
         // Assign the adapter
         binding.asteroidRecycler.adapter = adapter
 
+        // Assign the live data to the adapter's data
         viewModel.asteroidList.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.data = it
             }
         })
 
-
+        // navigate when the asteroid changes
         viewModel.navigateToAsteroidDetail.observe(viewLifecycleOwner, Observer {asteroid ->
             asteroid?.let{
                 this.findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))
@@ -47,7 +48,6 @@ class MainFragment : Fragment() {
             }
 
         })
-
 
         return binding.root
     }
