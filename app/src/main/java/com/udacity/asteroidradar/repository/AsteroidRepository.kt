@@ -9,7 +9,6 @@ import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.database.DatabaseAsteroid
 import com.udacity.asteroidradar.database.asDomainModel
-import com.udacity.asteroidradar.network.NetworkAsteroid
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
