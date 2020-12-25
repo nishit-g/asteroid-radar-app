@@ -63,14 +63,14 @@ class MainViewModel(private val database: AsteroidDatabase, application: Applica
 //        _asteroidList.value = dummyAsteroids()
         // Since we are now using repository
 //        fetchAsteroidList()
-        try{
-            viewModelScope.launch {
+        viewModelScope.launch {
+            try {
                 repository.refreshAsteroids()
                 setupPictureOfDay()
+            } catch (e:Exception){
+                Log.d(TAG, "${e.message}")
+                status.value = AsteroidApiStatus.DONE
             }
-        }catch (e:Exception){
-            Log.d(TAG, "${e.message}")
-            status.value = AsteroidApiStatus.DONE
         }
 
     }

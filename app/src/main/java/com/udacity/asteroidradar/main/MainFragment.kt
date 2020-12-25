@@ -57,30 +57,32 @@ class MainFragment : Fragment() {
         viewModel.pictureOfDay.observe(viewLifecycleOwner, Observer {
             it?.let {
 
-                Picasso.with(requireContext())
-                        .load(it.url)
-                        .networkPolicy(NetworkPolicy.OFFLINE)
-                        .placeholder(R.drawable.placeholder_picture_of_day)
-                        .into(binding.activityMainImageOfTheDay, object : Callback {
-                            override fun onSuccess() {
-                                // Offline cache hit
-                                Log.v("Picasso", "Cache Hit")
-                            }
 
-                            override fun onError() {
-                                Picasso.with(requireContext())
-                                        .load(it.url)
-                                        .into(binding.activityMainImageOfTheDay, object : Callback {
-                                            override fun onSuccess() {
-                                                //Online download
-                                            }
-                                            override fun onError() {
-                                                Log.v("Picasso", "Could not fetch image")
-                                            }
-                                        })
-                            }
+                    Picasso.with(requireContext())
+                            .load(it.url)
+                            .networkPolicy(NetworkPolicy.OFFLINE)
+                            .placeholder(R.drawable.placeholder_picture_of_day)
+                            .into(binding.activityMainImageOfTheDay, object : Callback {
+                                override fun onSuccess() {
+                                    // Offline cache hit
+                                    Log.v("Picasso", "Cache Hit")
+                                }
 
-                        })
+                                override fun onError() {
+                                    Picasso.with(requireContext())
+                                            .load(it.url)
+                                            .into(binding.activityMainImageOfTheDay, object : Callback {
+                                                override fun onSuccess() {
+                                                    //Online download
+                                                }
+
+                                                override fun onError() {
+                                                    Log.v("Picasso", "Could not fetch image")
+                                                }
+                                            })
+                                }
+
+                            })
             }
         })
 
