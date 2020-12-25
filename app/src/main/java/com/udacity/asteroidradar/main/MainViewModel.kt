@@ -32,7 +32,7 @@ class MainViewModel : ViewModel() {
         get() = _navigateToAsteroidDetail
 
     init {
-        _asteroidList.value = dummyAsteroids()
+//        _asteroidList.value = dummyAsteroids()
         fetchAsteroidList()
     }
 

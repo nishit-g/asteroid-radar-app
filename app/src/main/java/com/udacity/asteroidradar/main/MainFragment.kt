@@ -36,7 +36,9 @@ class MainFragment : Fragment() {
         // Assign the live data to the adapter's data
         viewModel.asteroidList.observe(viewLifecycleOwner, Observer {
             it?.let {
-                adapter.data = it
+                adapter.submitList(it)
+                // If not using list adapter
+//                adapter.data = it
             }
         })
 
