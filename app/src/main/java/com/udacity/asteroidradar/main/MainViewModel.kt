@@ -8,8 +8,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.PrivateConstants
 import com.udacity.asteroidradar.api.AsteroidApi
+import com.udacity.asteroidradar.api.PictureOfDayApiService
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.database.AsteroidDatabaseDAO
@@ -34,23 +36,40 @@ class MainViewModel(private val database: AsteroidDatabase, application: Applica
 //        get() = _asteroidList
 //
 
-    private val _navigateToAsteroidDetail = MutableLiveData<Asteroid>()
+    private val _pictureOfDay = MutableLiveData<PictureOfDay>()
+    val pictureOfDay: LiveData<PictureOfDay>
+        get() = _pictureOfDay
 
+
+    private val _navigateToAsteroidDetail = MutableLiveData<Asteroid>()
     val navigateToAsteroidDetail : LiveData<Asteroid>
         get() = _navigateToAsteroidDetail
+
 
     init {
 //        _asteroidList.value = dummyAsteroids()
         // Since we are now using repository
 //        fetchAsteroidList()
-
-        viewModelScope.launch {
-            repository.refreshAsteroids()
+        try{
+            viewModelScope.launch {
+                repository.refreshAsteroids()
+                setupPictureOfDay()
+            }
+        }catch (e:Exception){
+            Log.d(TAG, "${e.message}")
         }
+
     }
 
 
     val asteroidList = repository.asteroidsToShow
+
+    private suspend fun setupPictureOfDay() {
+        val result = PictureOfDayApiService.PictureOfDayApi.retrofitService.getPictureOfDay(apiKey).await()
+        if(result.mediaType == "image") {
+            _pictureOfDay.value = result
+        }
+    }
 
 //    private fun fetchAsteroidList() {
 //        viewModelScope.launch {

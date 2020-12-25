@@ -1,11 +1,8 @@
 package com.udacity.asteroidradar.api
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.Constants
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -18,6 +15,13 @@ private val moshi = Moshi.Builder()
         .build()
 
 
+// Retrofit builder
+val retrofit = Retrofit.Builder()
+        .addConverterFactory(ScalarsConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .baseUrl(Constants.BASE_URL)
+        .build()
+
 interface AsteroidApiServiceInterface {
 
     // Since we need to get string and then convert it to json objects
@@ -28,14 +32,6 @@ interface AsteroidApiServiceInterface {
 
 
 object AsteroidApi {
-    // Retrofit builder
-    private val retrofit = Retrofit.Builder()
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .baseUrl(Constants.BASE_URL)
-            .build()
-
-
     val retrofitService : AsteroidApiServiceInterface by lazy {
         retrofit.create(AsteroidApiServiceInterface::class.java)
     }

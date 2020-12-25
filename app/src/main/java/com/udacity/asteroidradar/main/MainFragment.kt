@@ -1,15 +1,19 @@
 package com.udacity.asteroidradar.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.squareup.picasso.Callback
+import com.squareup.picasso.NetworkPolicy
+import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
+
 
 class MainFragment : Fragment() {
 
@@ -33,7 +37,7 @@ class MainFragment : Fragment() {
         setHasOptionsMenu(true)
 
         // Create an adapter
-        val adapter = AsteroidAdapter(AsteroidAdapter.AsteroidClickListener {asteroid ->
+        val adapter = AsteroidAdapter(AsteroidAdapter.AsteroidClickListener { asteroid ->
             viewModel.onNavigateToAsteroidDetail(asteroid)
         })
 
@@ -49,9 +53,40 @@ class MainFragment : Fragment() {
             }
         })
 
+        // Setup Picture of the day using Picasso
+        viewModel.pictureOfDay.observe(viewLifecycleOwner, Observer {
+            it?.let {
+
+                Picasso.with(requireContext())
+                        .load(it.url)
+                        .networkPolicy(NetworkPolicy.OFFLINE)
+                        .placeholder(R.drawable.placeholder_picture_of_day)
+                        .into(binding.activityMainImageOfTheDay, object : Callback {
+                            override fun onSuccess() {
+                                // Offline cache hit
+                                Log.v("Picasso", "Cache Hit")
+                            }
+
+                            override fun onError() {
+                                Picasso.with(requireContext())
+                                        .load(it.url)
+                                        .into(binding.activityMainImageOfTheDay, object : Callback {
+                                            override fun onSuccess() {
+                                                //Online download
+                                            }
+                                            override fun onError() {
+                                                Log.v("Picasso", "Could not fetch image")
+                                            }
+                                        })
+                            }
+
+                        })
+            }
+        })
+
         // navigate when the asteroid changes
-        viewModel.navigateToAsteroidDetail.observe(viewLifecycleOwner, Observer {asteroid ->
-            asteroid?.let{
+        viewModel.navigateToAsteroidDetail.observe(viewLifecycleOwner, Observer { asteroid ->
+            asteroid?.let {
                 this.findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))
                 viewModel.doneNavigatingToAsteroidDetail()
             }

@@ -16,7 +16,6 @@ import org.json.JSONObject
 class AsteroidRepository(private val database : AsteroidDatabase) {
     // TODO : Add Your own API KEY HERE
     private val apiKey = PrivateConstants.API_KEY
-
     // UI's will observe this
     val asteroidsToShow: LiveData<List<Asteroid>> =
             Transformations.map(database.asteroidDatabaseDAO.getAll()) {
