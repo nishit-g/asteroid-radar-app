@@ -3,10 +3,7 @@ package com.udacity.asteroidradar.main
 import android.app.Application
 import android.content.ContentValues.TAG
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.PrivateConstants
@@ -22,6 +19,7 @@ import retrofit2.*
 import java.lang.Exception
 
 enum class AsteroidApiStatus { LOADING, DONE }
+enum class AsteroidApiFilter {LOAD_WEEK_ASTEROIDS, LOAD_TODAY_ASTEROIDS, LOAD_SAVED_ASTEROIDS }
 
 class MainViewModel(private val database: AsteroidDatabase, application: Application) : ViewModel() {
 
@@ -48,6 +46,17 @@ class MainViewModel(private val database: AsteroidDatabase, application: Applica
     val navigateToAsteroidDetail : LiveData<Asteroid>
         get() = _navigateToAsteroidDetail
 
+    private val asteroidFilter = MutableLiveData(AsteroidApiFilter.LOAD_WEEK_ASTEROIDS)
+
+
+    val asteroidList = Transformations.switchMap(asteroidFilter){
+        when(it!!){
+            AsteroidApiFilter.LOAD_TODAY_ASTEROIDS -> repository.todayAsteroids
+            AsteroidApiFilter.LOAD_WEEK_ASTEROIDS -> repository.weeklyAsteroids
+            AsteroidApiFilter.LOAD_SAVED_ASTEROIDS -> repository.savedAsteroids
+        }
+    }
+
 
     init {
 //        _asteroidList.value = dummyAsteroids()
@@ -66,13 +75,16 @@ class MainViewModel(private val database: AsteroidDatabase, application: Applica
     }
 
 
-    val asteroidList = repository.asteroidsToShow
-
     private suspend fun setupPictureOfDay() {
         val result = PictureOfDayApiService.PictureOfDayApi.retrofitService.getPictureOfDay(apiKey).await()
         if(result.mediaType == "image") {
             _pictureOfDay.value = result
         }
+    }
+
+    fun updateFilterSelection(value : AsteroidApiFilter){
+        Log.d(TAG, "updateFilterSelection: $value")
+        asteroidFilter.value = value
     }
 
 //    private fun fetchAsteroidList() {
@@ -120,3 +132,4 @@ class MainViewModel(private val database: AsteroidDatabase, application: Applica
 
 
 }
+

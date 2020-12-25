@@ -54,7 +54,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/tv_asteroid_date"
             app:layout_constraintRight_toRightOf="parent"
-            android:contentDescription="face_expression" />
+            app:bindContentDescription="@{asteroid.potentiallyHazardous}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
