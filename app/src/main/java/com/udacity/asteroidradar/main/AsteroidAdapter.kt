@@ -10,6 +10,9 @@ import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.SingleAsteroidBinding
 
+
+// TODO : Implement DiffUtils
+
 class AsteroidAdapter(private val clickListener : AsteroidClickListener) : RecyclerView.Adapter<AsteroidAdapter.ViewHolder>() {
     var data = listOf<Asteroid>()
 
@@ -55,7 +58,7 @@ class AsteroidAdapter(private val clickListener : AsteroidClickListener) : Recyc
     }
 
     // Click Listener
-    class AsteroidClickListener(val clickListener: (asteroidId: Long) -> Unit){
-        fun onClick(asteroid: Asteroid) = clickListener(asteroid.id)
+    class AsteroidClickListener(val clickListener: (asteroid: Asteroid) -> Unit){
+        fun onClick(asteroid: Asteroid) = clickListener(asteroid)
     }
 }

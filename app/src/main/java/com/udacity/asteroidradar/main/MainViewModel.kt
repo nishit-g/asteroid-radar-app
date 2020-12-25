@@ -12,6 +12,12 @@ class MainViewModel : ViewModel() {
     val asteroidList : LiveData<MutableList<Asteroid>>
         get() = _asteroidList
 
+
+    private val _navigateToAsteroidDetail = MutableLiveData<Asteroid>()
+
+    val navigateToAsteroidDetail : LiveData<Asteroid>
+        get() = _navigateToAsteroidDetail
+
     init {
         _asteroidList.value = dummyAsteroids()
     }
@@ -23,5 +29,13 @@ class MainViewModel : ViewModel() {
                 Asteroid(2,"DUM-02-THEN", "2021-30-12", 122.34, 35.3, 64.6,124.0, true),
                 Asteroid(3,"DUM-03-BEFORE", "2025-10-01", 654.34, 235.3, 76.6,34.0, true)
                 )
+    }
+
+    fun onNavigateToAsteroidDetail(asteroid : Asteroid){
+        _navigateToAsteroidDetail.value = asteroid
+    }
+
+    fun doneNavigatingToAsteroidDetail(){
+        _navigateToAsteroidDetail.value = null
     }
 }
