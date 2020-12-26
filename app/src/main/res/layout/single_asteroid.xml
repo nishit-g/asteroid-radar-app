@@ -15,35 +15,32 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_margin="4dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:background="@color/app_background"
+        android:padding="@dimen/normal_8dp"
         android:onClick="@{() -> clickListener.onClick(asteroid)}">
 
         <TextView
             android:id="@+id/tv_asteroid_main_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             tools:text="6834234 ( 200123 KB234 )"
             app:codeNameText="@{asteroid}"
             android:contentDescription="@{`Asteroids Codename : ` + asteroid.codename}"
-            android:textColor="@color/default_text_color"
-            android:textSize="28sp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"/>
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tv_asteroid_date"
+            style="@style/text_h2_style" />
 
         <TextView
             android:id="@+id/tv_asteroid_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             tools:text="2020-02-12"
-            android:textColor="@color/default_text_color"
             android:contentDescription="@{`Approaching Date : ` + asteroid.closeApproachDate}"
-            android:textSize="20sp"
             app:asteroidDateText="@{asteroid}"
             app:layout_constraintTop_toBottomOf="@id/tv_asteroid_main_text"
-            app:layout_constraintLeft_toRightOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/iv_face"
+            style="@style/text_h3_style" />
 
 
 
@@ -52,14 +49,16 @@
             android:id="@+id/iv_face"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:gravity="end"
-            android:src="@drawable/asteroid_safe"
-            app:statusIcon2="@{asteroid}"
-            app:layout_constraintLeft_toRightOf="@id/tv_asteroid_main_text"
-            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/ic_status_normal"
+            android:layout_marginEnd="12dp"
+            app:bindContentDescription="@{asteroid.potentiallyHazardous}"
             app:layout_constraintBottom_toBottomOf="@id/tv_asteroid_date"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toRightOf="@id/tv_asteroid_main_text"
             app:layout_constraintRight_toRightOf="parent"
-            app:bindContentDescription="@{asteroid.potentiallyHazardous}"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:statusIcon2="@{asteroid}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

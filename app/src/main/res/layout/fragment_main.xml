@@ -17,20 +17,16 @@
         <FrameLayout
             android:id="@+id/activity_main_image_of_the_day_layout"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="@dimen/layout_image_height"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/asteroid_recycler"
+            app:layout_constraintBottom_toTopOf="@id/upcoming_title"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/activity_main_image_of_the_day"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:contentDescription="@{`` + viewModel.pictureOfDay.title + ` Image`}"
-                app:srcCompat="@drawable/placeholder_picture_of_day"/>
+                style="@style/image_layout_style"
+                android:contentDescription="@{`` + viewModel.pictureOfDay.title + ` Image`}" />
 
             <TextView
                 android:id="@+id/textView"
@@ -40,22 +36,37 @@
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
                 android:contentDescription="@string/image_of_the_day"
-                android:textSize="20sp"
+                android:textSize="@dimen/iv_textSize"
                 android:layout_gravity="bottom"
                 android:background="#55010613"
                 android:text="@string/image_of_the_day" />
         </FrameLayout>
 
+
+        <TextView
+            android:id="@+id/upcoming_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/upcoming_asteroids"
+            android:layout_margin="@dimen/normal_8dp"
+            style="@style/text_h1_style"
+            app:layout_constraintTop_toBottomOf="@id/activity_main_image_of_the_day_layout"
+            app:layout_constraintBottom_toTopOf="@id/asteroid_recycler"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/asteroid_recycler"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginStart="@dimen/normal_8dp"
+            android:layout_marginEnd="@dimen/normal_8dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activity_main_image_of_the_day_layout"
+            app:layout_constraintTop_toBottomOf="@+id/upcoming_title"
             app:layout_constraintVertical_bias="0.0" />
 
         <ProgressBar

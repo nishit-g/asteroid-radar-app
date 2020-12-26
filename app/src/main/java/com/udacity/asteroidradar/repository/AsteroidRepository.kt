@@ -26,12 +26,19 @@ class AsteroidRepository(private val database : AsteroidDatabase) {
 
     private var today = ""
     private var week = ""
+    private var yesterday = ""
     init {
         val dataFormat = SimpleDateFormat(Constants.API_QUERY_DATE_FORMAT, Locale.getDefault())
         val calendar = Calendar.getInstance()
         today = dataFormat.format(calendar.time)
+
         calendar.add(Calendar.DAY_OF_YEAR, 7)
         week = dataFormat.format(calendar.time)
+
+        calendar.add(Calendar.DAY_OF_YEAR,-8)
+        yesterday = dataFormat.format(calendar.time)
+
+        Log.d("ZEBRA", "$today + $week + $yesterday")
     }
 
 
@@ -87,5 +94,11 @@ class AsteroidRepository(private val database : AsteroidDatabase) {
             database.asteroidDatabaseDAO.insertAll(transformedAsteroids.toList())
         }
         status.value = AsteroidApiStatus.DONE
+    }
+
+    suspend fun deleteAsteroids(){
+        withContext(Dispatchers.IO){
+            database.asteroidDatabaseDAO.deleteAsteroidsOfYesterday(yesterday)
+        }
     }
 }

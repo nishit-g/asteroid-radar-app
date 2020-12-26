@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="normal_8dp">8dp</dimen>
+    <dimen name="normal_4dp">4dp</dimen>
+    <dimen name="textSize_h1">24sp</dimen>
+    <dimen name="textSize_h2">22sp</dimen>
+    <dimen name="textSize_h3">18sp</dimen>
+    <dimen name="iv_textSize">20sp</dimen>
+    <dimen name="layout_image_height">220dp</dimen>
+</resources>

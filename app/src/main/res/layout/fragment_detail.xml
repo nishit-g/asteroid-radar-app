@@ -18,58 +18,49 @@
         android:layout_height="match_parent"
         android:background="@color/app_background">
 
+
         <!-- Content Description Has been binded in the same Binding function-->
         <ImageView
-            android:id="@+id/activity_main_image_of_the_day"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
+            android:id="@+id/iv_detail_asteroid"
             app:asteroidStatusImage="@{asteroid.potentiallyHazardous}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@drawable/asteroid_safe" />
+            tools:srcCompat="@drawable/asteroid_safe"
+            style="@style/image_layout_style" />
+
 
         <ScrollView
+            android:id="@+id/sv_details"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activity_main_image_of_the_day">
+            app:layout_constraintTop_toBottomOf="@+id/iv_detail_asteroid">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                <LinearLayout style="@style/ll_holder_style">
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/text_h2_style"
                         android:contentDescription="@string/close_approach_data_title"
                         android:text="@string/close_approach_data_title"
                         android:textColor="@color/default_text_color" />
 
                     <TextView
                         android:id="@+id/close_approach_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
+                        style="@style/text_h3_style"
                         android:contentDescription="@{asteroid.closeApproachDate}"
                         android:text="@{asteroid.closeApproachDate}"
-                        android:textColor="@color/default_text_color"
                         tools:text="2020-02-01" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                <LinearLayout style="@style/ll_holder_style"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -80,18 +71,13 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            style="@style/text_h2_style"
                             android:contentDescription="@string/absolute_magnitude_title"
-                            android:text="@string/absolute_magnitude_title"
-                            android:textColor="@color/default_text_color" />
+                            android:text="@string/absolute_magnitude_title" />
 
                         <TextView
                             android:id="@+id/absolute_magnitude"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:textColor="@color/default_text_color"
+                            style="@style/text_h3_style"
                             android:contentDescription="@string/absolute_magnitude_value"
                             app:astronomicalUnitText="@{asteroid.absoluteMagnitude}"
                             tools:text="25.126 au" />
@@ -107,62 +93,54 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:contentDescription="@string/estimated_diameter_title"
-                    android:text="@string/estimated_diameter_title"
-                    android:textColor="@color/default_text_color" />
+            <LinearLayout style="@style/ll_holder_style">
 
+                <TextView
+                    style="@style/text_h2_style"
+                    android:contentDescription="@string/estimated_diameter_title"
+                    android:text="@string/estimated_diameter_title" />
 
                 <!-- Content Description Has been binded in the same Binding function-->
                 <TextView
                     android:id="@+id/estimated_diameter"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="@color/default_text_color"
+                    style="@style/text_h3_style"
                     app:kmUnitText="@{asteroid.estimatedDiameter}"
                     tools:text="0.82 km" />
 
+            </LinearLayout>
+
+            <LinearLayout style="@style/ll_holder_style">
+
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    style="@style/text_h2_style"
                     android:contentDescription="@string/relative_velocity_title"
                     android:text="@string/relative_velocity_title"
                     android:textColor="@color/default_text_color" />
 
-
                 <!-- Content Description Has been binded in the same Binding function-->
                 <TextView
                     android:id="@+id/relative_velocity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="@color/default_text_color"
+                    style="@style/text_h3_style"
                     app:velocityText="@{asteroid.relativeVelocity}"
                     tools:text="11.9 km/s" />
 
+            </LinearLayout>
+
+            <LinearLayout style="@style/ll_holder_style">
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/text_h2_style"
                     android:contentDescription="@string/estimated_diameter_title"
-                    android:layout_marginTop="16dp"
                     android:text="@string/distance_from_earth_title"
                     android:textColor="@color/default_text_color" />
-
 
                 <!-- Content Description Has been binded in the same Binding function-->
                 <TextView
                     android:id="@+id/distance_from_earth"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="@color/default_text_color"
+                    style="@style/text_h3_style"
                     app:astronomicalUnitText="@{asteroid.distanceFromEarth}"
                     tools:text="0.0924 au" />
+
+            </LinearLayout>
 
             </LinearLayout>
         </ScrollView>

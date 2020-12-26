@@ -23,4 +23,6 @@ interface AsteroidDatabaseDAO {
     @Query("SELECT * FROM asteroids_table WHERE close_approach_date BETWEEN :startDate AND :endDate order by close_approach_date")
     fun getAsteroidsForWeek(startDate: String, endDate: String): LiveData<List<DatabaseAsteroid>>
 
+    @Query("delete from asteroids_table where close_approach_date = :day")
+    fun deleteAsteroidsOfYesterday(day: String)
 }
