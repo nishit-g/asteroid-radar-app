@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:background="@color/app_background"
-        android:padding="@dimen/normal_8dp"
+        android:padding="@dimen/normal_4dp"
         android:onClick="@{() -> clickListener.onClick(asteroid)}">
 
         <TextView
