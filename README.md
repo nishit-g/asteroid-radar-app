@@ -21,21 +21,10 @@ This app fetches asteroid list and picture of the day from NASA's API and displa
 - **Picasso** - For displaying the image
 - **SafeArgs** - For type safety in kotlin
 
-# App Demo
+# App Demo (Youtube Video)
 
 # Screenshots
 
-### English Version
-
-![Landscape Main Activity](/screenshots/app_eng_portrait_main.jpg)
-![Portrait Main Activity](/screenshots/app_eng_portrait_detail.jpg)
-![](/screenshots/app_eng_detail_dialog.jpg)
-![](/screenshots/app_eng_landscape_main.jpg)
-![](/screenshots/app_eng_landscape_detail.jpg)
-
-### Hindi Version
-
-![Landscape Main Hindi Fragment](/screenshots/app_hindi_portrait_main.jpg)
-![Portrait Main Hindi Fragment](/screenshots/app_hindi_portrait_detail.jpg)
-![](/screenshots/app_hindi_landscape_main.jpg)
-![](/screenshots/app_hindi_landscape_detail.jpg)
+![](./screenshots/1.png)
+![](./screenshots/2.png)
+![](./screenshots/3.png)
